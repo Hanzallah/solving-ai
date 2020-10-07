@@ -23,8 +23,37 @@ class StateSearch():
 def create_children(state):
     pass
 
+'''
+A depth-first search algorithm to find the goal state
+'''
 def dfs(cannibal_left, missionaries_left, boat_direction, boat_size):
-    pass
+    init_state = StateSearch(cannibal_left, missionaries_left, boat_direction, boat_size)
+
+    if init_state.goal_state():
+        return init_state()
+
+    # create the visisted set and the stack
+    visited = set()
+    stack = list()
+    stack.append(init_state)
+
+    while stack:
+        # remove and check the top state on the stack
+        top_state = stack.pop()
+        if (top_state.goal_state()):
+            return top_state
+        
+        # if the top state is not the goal state then add it to the visisted set
+        visited.add(top_state)
+
+        # get the children of the top stack
+        children = create_children(top_state)
+
+        # add children to the stack if they haven't been visited
+        for child in children:
+            if (child not in visited) or (child not in stack):
+                stack.append(child)
+    return None
 
 def print_path():
     pass
