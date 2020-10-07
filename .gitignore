@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
+# sqlite
+*.sqlite
+
+# vs code
+*.vs
+*.vscode
+
 # Distribution / packaging
 .Python
 build/
