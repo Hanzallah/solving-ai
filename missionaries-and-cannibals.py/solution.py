@@ -29,7 +29,9 @@ def is_goal_state(node):
 
 # validate the state under the problem constraints
 def validate(node):
-    return (node.m_left == 0 or node.m_left >= node.c_left) and (node.m_right == 0 or node.m_right >= node.c_right) and (node.m_left >= 0 and node.m_right >= 0) and (node.c_left >= 0 and node.c_right >= 0)
+    return (node.m_left == 0 or node.m_left >= node.c_left) \
+    and (node.m_right == 0 or node.m_right >= node.c_right) and (node.m_left >= 0 and node.m_right >= 0) \
+    and (node.c_left >= 0 and node.c_right >= 0)
 
 
 '''
