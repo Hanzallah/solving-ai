@@ -47,6 +47,14 @@ def create_children(state):
                 check_state.parent = state
                 children.append(check_state)
 
+        # equal numbers of both in boat
+        for i in range(1, (state.boat_size-1)//2):
+            check_state = State(state.c_left - i, state.m_left - i, state.c_right + i, state.m_right + i, 'right', state.boat_size)
+
+            if check_state.validate():
+                check_state.parent = state
+                children.append(check_state)
+
         # more missionaries than cannibals in boat
         for i in range(state.boat_size//2+1,state.boat_size):
             check_state = State(state.c_left - (state.boat_size-i), state.m_left - i, state.c_right +  (state.boat_size-i), state.m_right + i, 'right', state.boat_size)
@@ -66,6 +74,14 @@ def create_children(state):
         # only missionaries in boat
         for i in range(1,state.boat_size+1):
             check_state = State(state.c_left, state.m_left + i, state.c_right, state.m_right - i, 'left', state.boat_size)
+
+            if check_state.validate():
+                check_state.parent = state
+                children.append(check_state)
+
+        # equal numbers of both in boat
+        for i in range(1, (state.boat_size-1)//2):
+            check_state = State(state.c_left + i, state.m_left + i, state.c_right - i, state.m_right - i, 'left', state.boat_size)
 
             if check_state.validate():
                 check_state.parent = state
@@ -95,7 +111,7 @@ def dfs(c_left, m_left, c_right, m_right, boat_direction, boat_size):
     init_state = State(c_left, m_left, c_right, m_right, boat_direction, boat_size)
 
     if init_state.is_goal_state():
-        return init_state()
+        return init_state
 
     # create the visisted set and the stack
     visited = set()
@@ -107,7 +123,8 @@ def dfs(c_left, m_left, c_right, m_right, boat_direction, boat_size):
         top_state = stack.pop()
         if (top_state.is_goal_state()):
             return top_state
-        
+
+
         # if the top state is not the goal state then add it to the visisted set
         visited.add(top_state)
 
@@ -116,7 +133,7 @@ def dfs(c_left, m_left, c_right, m_right, boat_direction, boat_size):
 
         # add children to the stack if they haven't been visited
         for child in children:
-            if (child not in visited) or (child not in stack):
+            if (child not in visited):
                 stack.append(child)
     return None
 
@@ -125,6 +142,7 @@ Print the path taken to find the solution
 '''
 def print_path(solution):
     path = []
+    print(solution)
     path.append(solution)
 
     # create path by going up the tree using a node's parent
@@ -141,7 +159,7 @@ def print_path(solution):
         print("Boat Direction -> " + str(state.boat_direction))
 
 def main():
-    solution = dfs(5,5,0,0,'left',3)
+    solution = dfs(1,1,0,0,'left',3)
     print_path(solution)
 
 if __name__ == "__main__":
