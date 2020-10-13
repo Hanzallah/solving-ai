@@ -33,7 +33,9 @@ class State():
     def __hash__(self):
         return hash((self.c_left, self.m_left, self.c_right, self.m_right, self.boat_direction, self.boat_size))
 
-# TODO
+'''
+Find the valid children of a node and return as a list
+'''
 def create_children(state):
     children = []
     if state.boat_direction == 'left':
@@ -118,20 +120,25 @@ def dfs(c_left, m_left, c_right, m_right, boat_direction, boat_size):
                 stack.append(child)
     return None
 
-# TODO
+'''
+Print the path taken to find the solution
+'''
 def print_path(solution):
     path = []
     path.append(solution)
+
+    # create path by going up the tree using a node's parent
     parent = solution.parent
     while parent:
         path.append(parent)
         parent = parent.parent
     
-    for t in range(len(path)):
-        state = path[len(path) - t - 1]
-        print("(" + str(state.c_left) + "," + str(state.m_left) \
-                + "," + state.boat_direction + "," + str(state.c_right) + "," + \
-                str(state.m_right) + ")")
+    # print the path
+    for i in range(len(path)):
+        state = path.pop()
+        print("Left Side -> " + "C: " + str(state.c_left) + " M: " + str(state.m_left))
+        print("Right Side -> " + "C: " + str(state.c_right) + " M: " + str(state.m_right))
+        print("Boat Direction -> " + str(state.boat_direction))
 
 def main():
     solution = dfs(5,5,0,0,'left',3)
