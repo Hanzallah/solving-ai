@@ -3,7 +3,6 @@ A DFS search solution to the missionaries and cannibals problem
 '''
 import sys
 
-
 class State():
     def __init__(self, c_left, m_left, c_right, m_right, boat_direction, boat_size):
         self.parent = None
@@ -115,8 +114,6 @@ def create_children(state):
 '''
 A depth-first search algorithm to find the goal state
 '''
-
-
 def dfs(c_left, m_left, c_right, m_right, boat_direction, boat_size):
     init_state = State(c_left, m_left, c_right, m_right,
                        boat_direction, boat_size)
