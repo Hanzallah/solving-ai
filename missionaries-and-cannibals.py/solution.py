@@ -142,7 +142,6 @@ Print the path taken to find the solution
 '''
 def print_path(solution):
     path = []
-    print(solution)
     path.append(solution)
 
     # create path by going up the tree using a node's parent
@@ -152,11 +151,17 @@ def print_path(solution):
         parent = parent.parent
     
     # print the path
-    for i in range(len(path)):
-        state = path.pop()
-        print("Left Side -> " + "C: " + str(state.c_left) + " M: " + str(state.m_left))
-        print("Right Side -> " + "C: " + str(state.c_right) + " M: " + str(state.m_right))
-        print("Boat Direction -> " + str(state.boat_direction))
+    state = path[-1]
+    print("Left Side       -> " + "C: " + str(state.c_left) + " M: " + str(state.m_left))
+    print("Right Side      -> " + "C: " + str(state.c_right) + " M: " + str(state.m_right))
+    print("---------------------------------------------------------------------------")
+
+    for i in range(len(path)-2, -1, -1):
+        state = path[i]
+        parent = path[i+1]
+        print(f"SEND {abs(state.c_left - parent.c_left)} cannibals and {abs(state.m_left - parent.m_left)} missionaries to {str(state.boat_direction)}")
+        print("Left Side       -> " + "C: " + str(state.c_left) + " M: " + str(state.m_left))
+        print("Right Side      -> " + "C: " + str(state.c_right) + " M: " + str(state.m_right))
         print("---------------------------------------------------------------------------")
 
 def main(argv):
