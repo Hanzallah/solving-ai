@@ -18,18 +18,73 @@ class State():
 
     # validate the state under the problem constraints
     def validate(self):
-        return (self.m_left == 0 or self.m_left >= self.c_left) and (self.m_right == 0 or self.m_right >= self.c_right) \
-            and (self.m_left >= 0 and self.m_right >= 0) and (self.c_left >= 0 and self.c_right >= 0)
+        if (self.m_left == 0 or self.m_left >= self.c_left) and (self.m_right == 0 or self.m_right >= self.c_right) \
+            and (self.m_left >= 0 and self.m_right >= 0) and (self.c_left >= 0 and self.c_right >= 0):
+            return True
+        else:
+            return False
 
     # check if two states are equal
     def __eq__(self, other_state):
-        return self.c_right == other_state.c_right and self.m_right == other_state.m_right \
-            and self.c_left == other_state.c_left and self.m_left == other_state.m_left \
+        return self.c_left == other_state.c_left and self.m_left == other_state.m_left \
+            and  self.c_right == other_state.c_right and self.m_right == other_state.m_right \
             and self.boat_direction == other_state.boat_direction and self.boat_size == other_state.boat_size
+    
+    def __hash__(self):
+        return hash((self.c_left, self.m_left, self.c_right, self.m_right, self.boat_direction, self.boat_size))
 
 # TODO
 def create_children(state):
-    pass
+    children = []
+    if state.boat_direction == 'left':
+        # only missionaries in boat
+        for i in range(1,state.boat_size+1):
+            check_state = State(state.c_left, state.m_left - i, state.c_right, state.m_right + i, 'right', state.boat_size)
+
+            if check_state.validate():
+                check_state.parent = state
+                children.append(check_state)
+
+        # more missionaries than cannibals in boat
+        for i in range(state.boat_size//2+1,state.boat_size):
+            check_state = State(state.c_left - (state.boat_size-i), state.m_left - i, state.c_right +  (state.boat_size-i), state.m_right + i, 'right', state.boat_size)
+
+            if check_state.validate():
+                check_state.parent = state
+                children.append(check_state)
+
+        # only cannibals in boat
+        for i in range(1,state.boat_size+1):
+            check_state = State(state.c_left - i, state.m_left, state.c_right + i, state.m_right, 'right', state.boat_size)
+
+            if check_state.validate():
+                check_state.parent = state
+                children.append(check_state)
+    else:
+        # only missionaries in boat
+        for i in range(1,state.boat_size+1):
+            check_state = State(state.c_left, state.m_left + i, state.c_right, state.m_right - i, 'left', state.boat_size)
+
+            if check_state.validate():
+                check_state.parent = state
+                children.append(check_state)
+
+        # more missionaries than cannibals in boat
+        check_state = State(state.c_left + (state.boat_size//2), state.m_left + (state.boat_size//2+1), state.c_right - (state.boat_size//2), state.m_right - (state.boat_size//2+1), 'left', state.boat_size)
+
+        if check_state.validate():
+            check_state.parent = state
+            children.append(check_state)
+
+        # only cannibals in boat
+        for i in range(1,state.boat_size+1):
+            check_state = State(state.c_left + i, state.m_left, state.c_right - i, state.m_right, 'left', state.boat_size)
+
+            if check_state.validate():
+                check_state.parent = state
+                children.append(check_state)
+    return children
+
 
 '''
 A depth-first search algorithm to find the goal state
@@ -65,7 +120,18 @@ def dfs(c_left, m_left, c_right, m_right, boat_direction, boat_size):
 
 # TODO
 def print_path(solution):
-    pass
+    path = []
+    path.append(solution)
+    parent = solution.parent
+    while parent:
+        path.append(parent)
+        parent = parent.parent
+    
+    for t in range(len(path)):
+        state = path[len(path) - t - 1]
+        print("(" + str(state.c_left) + "," + str(state.m_left) \
+                + "," + state.boat_direction + "," + str(state.c_right) + "," + \
+                str(state.m_right) + ")")
 
 def main():
     solution = dfs(5,5,0,0,'left',3)
