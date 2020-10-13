@@ -1,6 +1,7 @@
 '''
 A DFS search solution to the missionaries and cannibals problem
 '''
+import sys
 
 class State():
     def __init__(self, c_left, m_left, c_right, m_right, boat_direction, boat_size):
@@ -157,9 +158,9 @@ def print_path(solution):
         print("Right Side -> " + "C: " + str(state.c_right) + " M: " + str(state.m_right))
         print("Boat Direction -> " + str(state.boat_direction))
 
-def main():
-    solution = dfs(6,6,0,0,'left',5)
+def main(argv):
+    solution = dfs(int(argv[0]),int(argv[1]),0,0,'left',int(argv[2]))
     print_path(solution)
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
