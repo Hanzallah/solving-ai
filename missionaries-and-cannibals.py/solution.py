@@ -157,6 +157,7 @@ def print_path(solution):
         print("Left Side -> " + "C: " + str(state.c_left) + " M: " + str(state.m_left))
         print("Right Side -> " + "C: " + str(state.c_right) + " M: " + str(state.m_right))
         print("Boat Direction -> " + str(state.boat_direction))
+        print("---------------------------------------------------------------------------")
 
 def main(argv):
     solution = dfs(int(argv[0]),int(argv[1]),0,0,'left',int(argv[2]))
