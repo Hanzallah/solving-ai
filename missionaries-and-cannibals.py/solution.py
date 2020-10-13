@@ -48,7 +48,7 @@ def create_children(state):
                 children.append(check_state)
 
         # equal numbers of both in boat
-        for i in range(1, (state.boat_size-1)//2):
+        for i in range(1, (state.boat_size)//2+1):
             check_state = State(state.c_left - i, state.m_left - i, state.c_right + i, state.m_right + i, 'right', state.boat_size)
 
             if check_state.validate():
@@ -80,7 +80,7 @@ def create_children(state):
                 children.append(check_state)
 
         # equal numbers of both in boat
-        for i in range(1, (state.boat_size-1)//2):
+        for i in range(1, (state.boat_size)//2+1):
             check_state = State(state.c_left + i, state.m_left + i, state.c_right - i, state.m_right - i, 'left', state.boat_size)
 
             if check_state.validate():
@@ -124,7 +124,6 @@ def dfs(c_left, m_left, c_right, m_right, boat_direction, boat_size):
         if (top_state.is_goal_state()):
             return top_state
 
-
         # if the top state is not the goal state then add it to the visisted set
         visited.add(top_state)
 
@@ -159,7 +158,7 @@ def print_path(solution):
         print("Boat Direction -> " + str(state.boat_direction))
 
 def main():
-    solution = dfs(1,1,0,0,'left',3)
+    solution = dfs(6,6,0,0,'left',5)
     print_path(solution)
 
 if __name__ == "__main__":
