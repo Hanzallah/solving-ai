@@ -19,11 +19,8 @@ class State():
 
     # validate the state under the problem constraints
     def validate(self):
-        if (self.m_left == 0 or self.m_left >= self.c_left) and (self.m_right == 0 or self.m_right >= self.c_right) \
-            and (self.m_left >= 0 and self.m_right >= 0) and (self.c_left >= 0 and self.c_right >= 0):
-            return True
-        else:
-            return False
+        return (self.m_left == 0 or self.m_left >= self.c_left) and (self.m_right == 0 or self.m_right >= self.c_right) \
+            and (self.m_left >= 0 and self.m_right >= 0) and (self.c_left >= 0 and self.c_right >= 0)
 
     # check if two states are equal
     def __eq__(self, other_state):
