@@ -55,6 +55,17 @@ class Node:
                     h1 = h1 + 1
         return h1
 
+    # Get the position of the empty tile [row, column]
+    def getEmptyTilePosition(self):
+        rows = len(self.puzzle)
+        columns = len(self.puzzle[0])
+        for i in range(0, rows):
+            for j in range(0, columns):
+                if self.puzzle[i][j] == -1:
+                    index = [i, j]
+                    return index
+        print("There is a problem, no empty tile in this puzzle!!!")
+
     #  Display the Puzzle in a neat way
     def display(self):
         rows = len(self.puzzle)
@@ -77,11 +88,13 @@ class Node:
         print("-----------------")
 
 
+# Just call this function and it returns distinct Puzzle
 def createPuzzle():
     # Note -1 is the empty tile
-    initState = [[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]]
+    nd = Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]])
+    initState = nd.puzzle
     for i in range(10):  # The empty tile moves 10 times randomly
-        index = getEmptyTilePosition(initState)
+        index = nd.getEmptyTilePosition()
         emptyTileRow = index[0]
         emtyTileCol = index[1]
 
@@ -131,20 +144,6 @@ def createPuzzle():
     return initState
 
 
-def getEmptyTilePosition(puzzle):
-    rows = len(puzzle)
-    columns = len(puzzle[0])
-    for i in range(0, rows):
-        for j in range(0, columns):
-            if puzzle[i][j] == -1:
-                index = [i, j]
-                return index
-    print("There is a problem, no empty tile in this puzzle!!!")
-
-
-
-
-
 def main():
     '''
     Just Testing the functions and classes
@@ -172,8 +171,6 @@ def main():
     nd = Node(createPuzzle())
     nd.display()
     print(f"h1 heuristic = {nd.estimatedDistanceToGoal}")
-
-
 
 
 if __name__ == "__main__":
