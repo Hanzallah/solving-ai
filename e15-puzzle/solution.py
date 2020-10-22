@@ -162,13 +162,14 @@ def getAllNextPossibleNodes(currentNode):
 # Just call this function and it returns distinct Puzzle
 def createPuzzle():
     # Note -1 is the empty tile
-    nd = Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]], 0)
+    nd = copy.deepcopy(Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]], 0))
     initState = nd.puzzle
+    temp = 0
     for i in range(10):  # The empty tile moves 10 times randomly
         index = nd.getEmptyTilePosition()
         emptyTileRow = index[0]
         emtyTileCol = index[1]
-
+        print(temp)
         randomTileShift = random.randint(0, 1)  # 0 is vertical, 1 is horizontal
         if randomTileShift == 0:  # vertical
             randomTileShiftUporDown = random.randint(0, 1)  # Random 0 is UP, 1 is DOWN
@@ -214,7 +215,7 @@ def createPuzzle():
     #print(initState)
     return initState
 
-
+# Slection Sort for the QUEUE
 def sort(givenQueue):
     sortedQueue = givenQueue
     for i in range(0, len(sortedQueue)):
@@ -230,6 +231,38 @@ def sort(givenQueue):
         sortedQueue[i], sortedQueue[min_idx] = sortedQueue[min_idx], sortedQueue[i]
 
     return sortedQueue
+
+
+def astar(initPuzzle):
+    queue = []
+    visited = []
+    queue.append(initPuzzle)
+    targetPuzzle = Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]], 0)
+
+    while len(queue) > 0:
+        sort(queue)
+        currentNode = queue.pop(0)
+        visited.append(currentNode)
+
+        if currentNode == targetPuzzle:
+            break
+
+        childrenNodes = getAllNextPossibleNodes(currentNode)
+        for children in childrenNodes:
+            for vis in visited:
+                if children == vis:
+                    continue
+            for q in queue:
+                if children == q:
+                    if children > q:
+                        continue
+
+            #print(children.distanceFromInitPuzzle)
+            queue.append(children)
+
+    return visited
+
+
 
 def main():
     '''
@@ -289,7 +322,12 @@ def main():
     for i in ndArray:
         print(i.totalCost)
     '''
-    
+    randomList = createPuzzle()
+    print(randomList)
+    initState = Node(randomList, 0)
+    visited = astar(initState)
+    for i in visited:
+        i.display()
 
 
 if __name__ == "__main__":
