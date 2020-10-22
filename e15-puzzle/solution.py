@@ -164,53 +164,53 @@ def createPuzzle():
     # Note -1 is the empty tile
     nd = copy.deepcopy(Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]], 0))
     initState = nd.puzzle
-    temp = 0
+
     for i in range(10):  # The empty tile moves 10 times randomly
         index = nd.getEmptyTilePosition()
         emptyTileRow = index[0]
-        emtyTileCol = index[1]
-        print(temp)
+        emptyTileCol = index[1]
+        temp = 0
         randomTileShift = random.randint(0, 1)  # 0 is vertical, 1 is horizontal
         if randomTileShift == 0:  # vertical
             randomTileShiftUporDown = random.randint(0, 1)  # Random 0 is UP, 1 is DOWN
             if randomTileShiftUporDown == 0:  # VERTICAL UP
                 if index[0] == 0:  # Top line can't shift up one more times
-                    temp = initState[emptyTileRow+1][emtyTileCol]
-                    initState[emptyTileRow+1][emtyTileCol] = -1
-                    initState[emptyTileRow][emtyTileCol] = temp
+                    temp = initState[emptyTileRow+1][emptyTileCol]
+                    initState[emptyTileRow+1][emptyTileCol] = -1
+                    initState[emptyTileRow][emptyTileCol] = temp
                 else:
-                    temp = initState[emptyTileRow-1][emtyTileCol]
-                    initState[emptyTileRow-1][emtyTileCol] = -1
-                    initState[emptyTileRow][emtyTileCol] = temp
+                    temp = initState[emptyTileRow-1][emptyTileCol]
+                    initState[emptyTileRow-1][emptyTileCol] = -1
+                    initState[emptyTileRow][emptyTileCol] = temp
             elif randomTileShiftUporDown == 1:  # VERTICAL DOWN
                 if index[0] == 3:  # this line can't go DOWN
-                    temp = initState[emptyTileRow-1][emtyTileCol]
-                    initState[emptyTileRow][emtyTileCol-1] = -1
-                    initState[emptyTileRow][emtyTileCol] = temp
+                    temp = initState[emptyTileRow-1][emptyTileCol]
+                    initState[emptyTileRow-1][emptyTileCol] = -1
+                    initState[emptyTileRow][emptyTileCol] = temp
                 else:
-                    temp = initState[emptyTileRow+1][emtyTileCol]
-                    initState[emptyTileRow+1][emtyTileCol] = -1
-                    initState[emptyTileRow][emtyTileCol] = temp
+                    temp = initState[emptyTileRow+1][emptyTileCol]
+                    initState[emptyTileRow+1][emptyTileCol] = -1
+                    initState[emptyTileRow][emptyTileCol] = temp
         elif randomTileShift == 1:  # horizontal
             randomTileShiftRightorLeft = random.randint(0, 1)  # Random RIGHT is 0, LEFT is 1
             if randomTileShiftRightorLeft == 0:  # HORIZONTAL RIGHT
                 if index[1] == 3:
-                    temp = initState[emptyTileRow][emtyTileCol-1]
-                    initState[emptyTileRow][emtyTileCol-1] = -1
-                    initState[emptyTileRow][emtyTileCol] = temp
+                    temp = initState[emptyTileRow][emptyTileCol-1]
+                    initState[emptyTileRow][emptyTileCol-1] = -1
+                    initState[emptyTileRow][emptyTileCol] = temp
                 else:
-                    temp = initState[emptyTileRow][emtyTileCol+1]
-                    initState[emptyTileRow][emtyTileCol+1] = -1
-                    initState[emptyTileRow][emtyTileCol] = temp
+                    temp = initState[emptyTileRow][emptyTileCol+1]
+                    initState[emptyTileRow][emptyTileCol+1] = -1
+                    initState[emptyTileRow][emptyTileCol] = temp
             elif randomTileShiftRightorLeft == 1:  # HORIZONTAL LEFT
                 if index[1] == 0:
-                    temp = initState[emptyTileRow][emtyTileCol+1]
-                    initState[emptyTileRow][emtyTileCol+1] = -1
-                    initState[emptyTileRow][emtyTileCol] = temp
+                    temp = initState[emptyTileRow][emptyTileCol+1]
+                    initState[emptyTileRow][emptyTileCol+1] = -1
+                    initState[emptyTileRow][emptyTileCol] = temp
                 else:
-                    temp = initState[emptyTileRow][emtyTileCol-1]
-                    initState[emptyTileRow][emtyTileCol-1] = -1
-                    initState[emptyTileRow][emtyTileCol] = temp
+                    temp = initState[emptyTileRow][emptyTileCol-1]
+                    initState[emptyTileRow][emptyTileCol-1] = -1
+                    initState[emptyTileRow][emptyTileCol] = temp
 
     #print(initState)
     return initState
