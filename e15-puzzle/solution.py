@@ -2,7 +2,7 @@
 An A* search based solution for the E15 puzzle.
 '''
 import random
-
+import copy
 '''
 NOTE FROM -> Yusuf Ziya Dilek
 Beware that 10 scrambles does not scramble very much, especially top left
@@ -11,9 +11,11 @@ does not change much since the empty tile starts from the bottom right
 
 
 class Node:
-    def __init__(self, puzzle):
+    def __init__(self, puzzle, distanceFromInitPuzzle):
         self.puzzle = puzzle
         self.estimatedDistanceToGoal = self.h1Heuristic()
+        self.distanceFromInitPuzzle = distanceFromInitPuzzle
+        self.totalCost = self.distanceFromInitPuzzle + self.estimatedDistanceToGoal
 
     # Override EQUALS (==)
     def __eq__(self, other):
@@ -27,21 +29,17 @@ class Node:
 
     # Override LESS THAN (<)
     def __lt__(self, other):
-        if self.estimatedDistanceToGoal < other.estimatedDistanceToGoal:
+        if self.totalCost < other.totalCost:
             return True
         else:
             return False
 
     # Override GREATER THAN (>)
     def __gt__(self, other):
-        if self.estimatedDistanceToGoal > other.estimatedDistanceToGoal:
+        if self.totalCost > other.totalCost:
             return True
         else:
             return False
-
-    # GET possible Nodes that we can go from this Node
-    def getAllNextPossibleNodes():
-        print("DO this next")
 
     # Find the admissable heuristic of this puzzle
     def h1Heuristic(self):
@@ -88,10 +86,83 @@ class Node:
         print("-----------------")
 
 
+# GET possible Nodes that we can go from this Node
+def getAllNextPossibleNodes(currentNode):
+    emptyTilePosition = currentNode.getEmptyTilePosition()
+    emptyTileRow = emptyTilePosition[0]
+    emptyTileCol = emptyTilePosition[1]
+
+    nextNodes = []
+    # UP
+    tempNode = copy.deepcopy(currentNode)
+
+    upTileRow = emptyTileRow - 1
+    upTileCol = emptyTileCol
+    if upTileRow >= 0:
+        temp = tempNode.puzzle[upTileRow][upTileCol]
+        tempNode.puzzle[upTileRow][upTileCol] = -1
+        tempNode.puzzle[emptyTileRow][emptyTileCol] = temp
+
+        tempNode.estimatedDistanceToGoal = tempNode.h1Heuristic()
+        tempNode.distanceFromInitPuzzle = tempNode.distanceFromInitPuzzle + 1
+        tempNode.totalCost = tempNode.distanceFromInitPuzzle + tempNode.estimatedDistanceToGoal
+        nextNodes.append(tempNode)
+
+    # Down
+    del tempNode
+    tempNode = copy.deepcopy(currentNode)
+
+    downTileRow = emptyTileRow + 1
+    downTileCol = emptyTileCol
+    if downTileRow <= 3:
+        temp = tempNode.puzzle[downTileRow][downTileCol]
+        tempNode.puzzle[downTileRow][downTileCol] = -1
+        tempNode.puzzle[emptyTileRow][emptyTileCol] = temp
+
+        tempNode.estimatedDistanceToGoal = tempNode.h1Heuristic()
+        tempNode.distanceFromInitPuzzle = tempNode.distanceFromInitPuzzle + 1
+        tempNode.totalCost = tempNode.distanceFromInitPuzzle + tempNode.estimatedDistanceToGoal
+        nextNodes.append(tempNode)
+
+    # RIGHT
+    del tempNode
+    tempNode = copy.deepcopy(currentNode)
+
+    rightTileRow = emptyTileRow
+    rightTileCol = emptyTileCol + 1
+    if rightTileCol <= 3:
+        temp = tempNode.puzzle[rightTileRow][rightTileCol]
+        tempNode.puzzle[rightTileRow][rightTileCol] = -1
+        tempNode.puzzle[emptyTileRow][emptyTileCol] = temp
+
+        tempNode.estimatedDistanceToGoal = tempNode.h1Heuristic()
+        tempNode.distanceFromInitPuzzle = tempNode.distanceFromInitPuzzle + 1
+        tempNode.totalCost = tempNode.distanceFromInitPuzzle + tempNode.estimatedDistanceToGoal
+        nextNodes.append(tempNode)
+
+    # LEFT
+    del tempNode
+    tempNode = copy.deepcopy(currentNode)
+
+    leftTileRow = emptyTileRow
+    leftTileCol = emptyTileCol - 1
+    if leftTileCol >= 0:
+        temp = tempNode.puzzle[leftTileRow][leftTileCol]
+        tempNode.puzzle[leftTileRow][leftTileCol] = -1
+        tempNode.puzzle[emptyTileRow][emptyTileCol] = temp
+
+        tempNode.estimatedDistanceToGoal = tempNode.h1Heuristic()
+        tempNode.distanceFromInitPuzzle = tempNode.distanceFromInitPuzzle + 1
+        tempNode.totalCost = tempNode.distanceFromInitPuzzle + tempNode.estimatedDistanceToGoal
+        nextNodes.append(tempNode)
+
+    return nextNodes
+
+
 # Just call this function and it returns distinct Puzzle
 def createPuzzle():
     # Note -1 is the empty tile
-    nd = Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]])
+    nd = Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]], 0)
     initState = nd.puzzle
     for i in range(10):  # The empty tile moves 10 times randomly
         index = nd.getEmptyTilePosition()
@@ -144,6 +215,22 @@ def createPuzzle():
     return initState
 
 
+def sort(givenQueue):
+    sortedQueue = givenQueue
+    for i in range(0, len(sortedQueue)):
+        # Find the minimum element in remaining
+        # unsorted array
+        min_idx = i
+        for j in range(i+1, len(sortedQueue)):
+            if sortedQueue[min_idx].totalCost > sortedQueue[j].totalCost:
+                min_idx = j
+
+        # Swap the found minimum element with
+        # the first element
+        sortedQueue[i], sortedQueue[min_idx] = sortedQueue[min_idx], sortedQueue[i]
+
+    return sortedQueue
+
 def main():
     '''
     Just Testing the functions and classes
@@ -168,9 +255,41 @@ def main():
     print(puzzle)
     print(h1Heuristic(puzzle))
     '''
-    nd = Node(createPuzzle())
+    '''
+    nd = Node(createPuzzle(), 0)
     nd.display()
-    print(f"h1 heuristic = {nd.estimatedDistanceToGoal}")
+    print(nd.estimatedDistanceToGoal)
+
+    ndArray = getAllNextPossibleNodes(nd)
+
+    for i in ndArray:
+        i.display()
+        print(i.estimatedDistanceToGoal)
+        print(i.totalCost)
+
+    nd.display()
+    print(nd.estimatedDistanceToGoal)
+    print(nd.totalCost)
+    '''
+    '''
+    ndArray = []
+    ndArray.append(Node(createPuzzle(), 100))
+    ndArray.append(Node(createPuzzle(), 80))
+    ndArray.append(Node(createPuzzle(), 60))
+    ndArray.append(Node(createPuzzle(), 40))
+    for i in ndArray:
+        print(i.totalCost)
+
+    ndArraySorted = sort(ndArray)
+    print("----------")
+    for i in ndArraySorted:
+        print(i.totalCost)
+
+    print("----------")
+    for i in ndArray:
+        print(i.totalCost)
+    '''
+    
 
 
 if __name__ == "__main__":
