@@ -1,24 +1,28 @@
 '''
 An A* search based solution for the E15 puzzle.
+We used h1: number of misplaced tiles as the admissable heuristic
+h1 is an admissible heuristic for the 15-puzzle, since every tile that is out
+of position must be moved at least once
 '''
 import random
 import copy
-'''
-NOTE FROM -> Yusuf Ziya Dilek
-Beware that 10 scrambles does not scramble very much, especially top left
-does not change much since the empty tile starts from the bottom right
-'''
 
+'''
+Node class holds the puzzle as 2D list where -1 is denoting the empty tile and
+other variables like estimated distance to goal (underestimate) and total esti-
+mation which is  (h1 heuristic + distance between the current node and the start node)
 
+Note that the ==, <, and > are overwritten in this class
+'''
 class Node:
     def __init__(self, puzzle, distanceFromInitPuzzle):
-        self.puzzle = puzzle
-        self.estimatedDistanceToGoal = self.h1Heuristic()
-        self.distanceFromInitPuzzle = distanceFromInitPuzzle
-        self.totalCost = self.distanceFromInitPuzzle + self.estimatedDistanceToGoal
+        self.puzzle = puzzle  # The puzzle itself which is represented by a 2D list where empty tile is -1
+        self.estimatedDistanceToGoal = self.h1Heuristic()  # h1 admissable heuristic
+        self.distanceFromInitPuzzle = distanceFromInitPuzzle  # Distance from the initial state
+        self.totalCost = self.distanceFromInitPuzzle + self.estimatedDistanceToGoal  # Total estimation
 
     # Override EQUALS (==)
-    def __eq__(self, other):
+    def __eq__(self, other):  # checks for if puzzle is the same
         rows = len(self.puzzle)
         columns = len(self.puzzle[0])
         for i in range(0, rows):
@@ -46,10 +50,10 @@ class Node:
         h1 = 0
         rows = len(self.puzzle)
         columns = len(self.puzzle[0])
-        finalState = [[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]]
+        finalState = [[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]]  # The state we want to reach
         for i in range(0, rows):
             for j in range(0, columns):
-                if (self.puzzle[i][j]-finalState[i][j]) != 0:
+                if (self.puzzle[i][j]-finalState[i][j]) != 0:  # Count the Number of misplaced tiles
                     h1 = h1 + 1
         return h1
 
@@ -59,7 +63,7 @@ class Node:
         columns = len(self.puzzle[0])
         for i in range(0, rows):
             for j in range(0, columns):
-                if self.puzzle[i][j] == -1:
+                if self.puzzle[i][j] == -1:  # Looking for the position of the empty tile which is denoted by -1
                     index = [i, j]
                     return index
         print("There is a problem, no empty tile in this puzzle!!!")
@@ -86,14 +90,14 @@ class Node:
         print("-----------------")
 
 
-# GET possible Nodes that we can go from this Node
+# GET possible Nodes that we can go from the given node
 def getAllNextPossibleNodes(currentNode):
     emptyTilePosition = currentNode.getEmptyTilePosition()
     emptyTileRow = emptyTilePosition[0]
     emptyTileCol = emptyTilePosition[1]
 
     nextNodes = []
-    # UP
+    # ------ UP -------
     tempNode = copy.deepcopy(currentNode)  # Temp Node that will be tested if its valid next Node
 
     upTileRow = emptyTileRow - 1
@@ -108,7 +112,7 @@ def getAllNextPossibleNodes(currentNode):
         tempNode.totalCost = tempNode.distanceFromInitPuzzle + tempNode.estimatedDistanceToGoal
         nextNodes.append(tempNode)
 
-    # Down
+    # -------- DOWN -------
     del tempNode
     tempNode = copy.deepcopy(currentNode)  # Temp Node that will be tested if its valid next Node
 
@@ -124,7 +128,7 @@ def getAllNextPossibleNodes(currentNode):
         tempNode.totalCost = tempNode.distanceFromInitPuzzle + tempNode.estimatedDistanceToGoal
         nextNodes.append(tempNode)
 
-    # RIGHT
+    # --------- RIGHT --------
     del tempNode
     tempNode = copy.deepcopy(currentNode)  # Temp Node that will be tested if its valid next Node
 
@@ -140,7 +144,7 @@ def getAllNextPossibleNodes(currentNode):
         tempNode.totalCost = tempNode.distanceFromInitPuzzle + tempNode.estimatedDistanceToGoal
         nextNodes.append(tempNode)
 
-    # LEFT
+    # -------- LEFT -------
     del tempNode
     tempNode = copy.deepcopy(currentNode)  # Temp Node that will be tested if its valid next Node
 
@@ -159,6 +163,7 @@ def getAllNextPossibleNodes(currentNode):
     return nextNodes
 
 
+# Puzzle Generator
 # Just call this function and it returns distinct Puzzle
 def createPuzzle():
     # Note -1 is the empty tile
@@ -212,7 +217,6 @@ def createPuzzle():
                     initState[emptyTileRow][emptyTileCol-1] = -1
                     initState[emptyTileRow][emptyTileCol] = temp
 
-    #print(initState)
     return initState
 
 # Selection Sort for the QUEUE
@@ -233,37 +237,38 @@ def sort(givenQueue):
 
 #  ----------A* algorithm with admissable heuristic ----------
 def astar(initPuzzle):
-    queue = []
-    visited = []
-    queue.append(initPuzzle)
-    targetPuzzle = Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]], 0)
+    queue = []  # Initialize the Queue for the Nodes. This will hold array of puzzles which we can expand from the smallest total cost
+    visited = []  # At the end this will be complete tree between start and end puzzle nodes
+    queue.append(initPuzzle)  # Add starting ouzzle to the queue
+    targetPuzzle = Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]], 0)  # Solved Puzzle
 
-    while len(queue) > 0:
-        sort(queue)
+    while len(queue) > 0:  # Loop until queue is empty or target is found
+        sort(queue)  # We sort the queue every time so we can pop the smallest cost puzzle
         currentNode = queue.pop(0)
-        visited.append(currentNode)
+        visited.append(currentNode)  # Add current node to the visited list
 
         # Target Reached --> Backtrck and find the path
         if currentNode == targetPuzzle:
-            finalPath = backtrack(visited)
-            finalPath.reverse()
-            return finalPath
+            finalPath = backtrack(visited)  # Backtrck Algorithm finds the path between start and end states
+            finalPath.reverse()  # Path comes reversed from the backtrack() function, we fix it here
+            return finalPath  # Return the resulting path
             break
 
-        childrenNodes = getAllNextPossibleNodes(currentNode)
+        childrenNodes = getAllNextPossibleNodes(currentNode)  # Get all of the possible next states
         for children in childrenNodes:
             for vis in visited:
-                if children == vis:
-                    continue
+                if children == vis:  # Check if we previously visited any of these new states
+                    continue  # If visited before, just skip it
             for q in queue:
-                if children == q:
-                    if children > q:
+                if children == q:  # If we encounter a new state that is already in the queue
+                    # We check if new states cost is bigger than the state in the queue
+                    if children > q:  # This bigger than is overwritten in the Node class which checks for the cost
                         continue
 
             #print(children.distanceFromInitPuzzle)
             queue.append(children)
 
-    return visited
+    return None
 
 
 #  This function Traverses the final tree and finds the path between initial puzzle and the solved puzzle
@@ -281,18 +286,19 @@ def backtrack(visited):
 
     return finalPath  # At the end return the backtracked path from END to START
 
+
 # Main function that creates and solves 12 E15 puzzles
 def main():
     for i in range(1, 13):
         print()
         print(f"------ Randomized E15 Puzzle S{i} ------")
-        initState = Node(createPuzzle(), 0)
+        initState = Node(createPuzzle(), 0)  # Puzzle Generator
         print(f"------- Initial State of S{i} -------")
-        initState.display()
+        initState.display()  # Display the scrambled first Puzzle
         print(f"-------- Solution of S{i} ----------")
-        finalPath = astar(initState)
+        finalPath = astar(initState)  # Solve the puzzle with A* algorithm
         for j in finalPath:
-            j.display()
+            j.display()  # Display the moves needed to solve the puzzle
         print(f"-------- End of E15 Puzzle S{i} --------")
 
 
