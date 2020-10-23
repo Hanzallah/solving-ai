@@ -241,17 +241,19 @@ def astar(initPuzzle):
     visited = []  # At the end this will be complete tree between start and end puzzle nodes
     queue.append(initPuzzle)  # Add starting ouzzle to the queue
     targetPuzzle = Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]], 0)  # Solved Puzzle
-
+    maxLengthQueue = 1
     while len(queue) > 0:  # Loop until queue is empty or target is found
         sort(queue)  # We sort the queue every time so we can pop the smallest cost puzzle
         currentNode = queue.pop(0)
         visited.append(currentNode)  # Add current node to the visited list
+        if len(queue) > maxLengthQueue:
+            maxLengthQueue = len(queue)
 
         # Target Reached --> Backtrck and find the path
         if currentNode == targetPuzzle:
             finalPath = backtrack(visited)  # Backtrck Algorithm finds the path between start and end states
             finalPath.reverse()  # Path comes reversed from the backtrack() function, we fix it here
-            return finalPath  # Return the resulting path
+            return finalPath, maxLengthQueue  # Return the resulting path
             break
 
         childrenNodes = getAllNextPossibleNodes(currentNode)  # Get all of the possible next states
@@ -296,7 +298,9 @@ def main():
         print(f"------- Initial State of S{i} -------")
         initState.display()  # Display the scrambled first Puzzle
         print(f"-------- Solution of S{i} ----------")
-        finalPath = astar(initState)  # Solve the puzzle with A* algorithm
+        finalPath, maxQueueLength = astar(initState)  # Solve the puzzle with A* algorithm
+        print(f"Max Queue Length = {maxQueueLength}")
+        print(f"Solution Length = {len(finalPath)}")
         for j in finalPath:
             j.display()  # Display the moves needed to solve the puzzle
         print(f"-------- End of E15 Puzzle S{i} --------")
