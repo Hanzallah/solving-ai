@@ -4,7 +4,9 @@
 
 -> An A* search based solution for the E15 puzzle.
 
--> We used h1: number of misplaced tiles as the admissible heuristic
+-> We used h1: number of misplaced tiles as the admissible heuristic. Proof:
+h1 is an admissible heuristic for the 15-puzzle, since every tile that is out 
+of position must be moved at least once
 
 -> We used generator(createPuzzle())  to obtain a dozen distinct initial states
 of the E15-puzzle.
