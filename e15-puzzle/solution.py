@@ -94,11 +94,11 @@ def getAllNextPossibleNodes(currentNode):
 
     nextNodes = []
     # UP
-    tempNode = copy.deepcopy(currentNode)
+    tempNode = copy.deepcopy(currentNode)  # Temp Node that will be tested if its valid next Node
 
     upTileRow = emptyTileRow - 1
     upTileCol = emptyTileCol
-    if upTileRow >= 0:
+    if upTileRow >= 0:  # If UP shift is possible
         temp = tempNode.puzzle[upTileRow][upTileCol]
         tempNode.puzzle[upTileRow][upTileCol] = -1
         tempNode.puzzle[emptyTileRow][emptyTileCol] = temp
@@ -110,11 +110,11 @@ def getAllNextPossibleNodes(currentNode):
 
     # Down
     del tempNode
-    tempNode = copy.deepcopy(currentNode)
+    tempNode = copy.deepcopy(currentNode)  # Temp Node that will be tested if its valid next Node
 
     downTileRow = emptyTileRow + 1
     downTileCol = emptyTileCol
-    if downTileRow <= 3:
+    if downTileRow <= 3:  # If Down shift is possible
         temp = tempNode.puzzle[downTileRow][downTileCol]
         tempNode.puzzle[downTileRow][downTileCol] = -1
         tempNode.puzzle[emptyTileRow][emptyTileCol] = temp
@@ -126,11 +126,11 @@ def getAllNextPossibleNodes(currentNode):
 
     # RIGHT
     del tempNode
-    tempNode = copy.deepcopy(currentNode)
+    tempNode = copy.deepcopy(currentNode)  # Temp Node that will be tested if its valid next Node
 
     rightTileRow = emptyTileRow
     rightTileCol = emptyTileCol + 1
-    if rightTileCol <= 3:
+    if rightTileCol <= 3:  # If RIGHT shift is possible
         temp = tempNode.puzzle[rightTileRow][rightTileCol]
         tempNode.puzzle[rightTileRow][rightTileCol] = -1
         tempNode.puzzle[emptyTileRow][emptyTileCol] = temp
@@ -142,11 +142,11 @@ def getAllNextPossibleNodes(currentNode):
 
     # LEFT
     del tempNode
-    tempNode = copy.deepcopy(currentNode)
+    tempNode = copy.deepcopy(currentNode)  # Temp Node that will be tested if its valid next Node
 
     leftTileRow = emptyTileRow
     leftTileCol = emptyTileCol - 1
-    if leftTileCol >= 0:
+    if leftTileCol >= 0:  # If left shift is possible
         temp = tempNode.puzzle[leftTileRow][leftTileCol]
         tempNode.puzzle[leftTileRow][leftTileCol] = -1
         tempNode.puzzle[emptyTileRow][emptyTileCol] = temp
@@ -215,7 +215,7 @@ def createPuzzle():
     #print(initState)
     return initState
 
-# Slection Sort for the QUEUE
+# Selection Sort for the QUEUE
 def sort(givenQueue):
     sortedQueue = givenQueue
     for i in range(0, len(sortedQueue)):
@@ -225,14 +225,13 @@ def sort(givenQueue):
         for j in range(i+1, len(sortedQueue)):
             if sortedQueue[min_idx].totalCost > sortedQueue[j].totalCost:
                 min_idx = j
-
         # Swap the found minimum element with
         # the first element
         sortedQueue[i], sortedQueue[min_idx] = sortedQueue[min_idx], sortedQueue[i]
-
     return sortedQueue
 
 
+#  ----------A* algorithm with admissable heuristic ----------
 def astar(initPuzzle):
     queue = []
     visited = []
@@ -244,7 +243,11 @@ def astar(initPuzzle):
         currentNode = queue.pop(0)
         visited.append(currentNode)
 
+        # Target Reached --> Backtrck and find the path
         if currentNode == targetPuzzle:
+            finalPath = backtrack(visited)
+            finalPath.reverse()
+            return finalPath
             break
 
         childrenNodes = getAllNextPossibleNodes(currentNode)
@@ -263,71 +266,34 @@ def astar(initPuzzle):
     return visited
 
 
+#  This function Traverses the final tree and finds the path between initial puzzle and the solved puzzle
+def backtrack(visited):
+    finalPath = []  # This will hold the final path between start and the end
+    visited.reverse()  # Reverse the tree and parse it from END to START
+    possiblePaths = getAllNextPossibleNodes(visited[0])  # Get all possible next nodes for the END state
+    finalPath.append(visited[0])
+    for i in range(1, len(visited)):
+        for j in possiblePaths:
+            if visited[i] == j:  # Search for the next suitable node
+                finalPath.append(visited[i])  # When we foun the suitable next node, add it to the final path
+                possiblePaths = getAllNextPossibleNodes(visited[i])  # Get the next possible paths for the newly found node
+                break  # Break and look for the next Node
 
+    return finalPath  # At the end return the backtracked path from END to START
+
+# Main function that creates and solves 12 E15 puzzles
 def main():
-    '''
-    Just Testing the functions and classes
-    '''
-    '''
-    for i in range(10):
-        newPuzzle = createPuzzle()
-        display(newPuzzle)
+    for i in range(1, 13):
         print()
-    '''
-    '''
-    nd = Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]], 3)
-    print(nd.puzzle)
-    nd2 = Node([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 5], [4, 5, 5, -1]], 5)
-    if nd < nd2:
-        print("Less than")
-    else:
-        print("Not less")
-    '''
-    '''
-    puzzle = createPuzzle()
-    print(puzzle)
-    print(h1Heuristic(puzzle))
-    '''
-    '''
-    nd = Node(createPuzzle(), 0)
-    nd.display()
-    print(nd.estimatedDistanceToGoal)
-
-    ndArray = getAllNextPossibleNodes(nd)
-
-    for i in ndArray:
-        i.display()
-        print(i.estimatedDistanceToGoal)
-        print(i.totalCost)
-
-    nd.display()
-    print(nd.estimatedDistanceToGoal)
-    print(nd.totalCost)
-    '''
-    '''
-    ndArray = []
-    ndArray.append(Node(createPuzzle(), 100))
-    ndArray.append(Node(createPuzzle(), 80))
-    ndArray.append(Node(createPuzzle(), 60))
-    ndArray.append(Node(createPuzzle(), 40))
-    for i in ndArray:
-        print(i.totalCost)
-
-    ndArraySorted = sort(ndArray)
-    print("----------")
-    for i in ndArraySorted:
-        print(i.totalCost)
-
-    print("----------")
-    for i in ndArray:
-        print(i.totalCost)
-    '''
-    randomList = createPuzzle()
-    print(randomList)
-    initState = Node(randomList, 0)
-    visited = astar(initState)
-    for i in visited:
-        i.display()
+        print(f"------ Randomized E15 Puzzle S{i} ------")
+        initState = Node(createPuzzle(), 0)
+        print(f"------- Initial State of S{i} -------")
+        initState.display()
+        print(f"-------- Solution of S{i} ----------")
+        finalPath = astar(initState)
+        for j in finalPath:
+            j.display()
+        print(f"-------- End of E15 Puzzle S{i} --------")
 
 
 if __name__ == "__main__":
