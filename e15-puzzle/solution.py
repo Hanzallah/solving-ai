@@ -305,6 +305,7 @@ def main():
         print(f"-------- Solution of S{i} ----------")
         finalPath, maxQueueLength = astar(initState)  # Solve the puzzle with A* algorithm
         print(f"Max Queue Length = {maxQueueLength}")
+        maxQueueLength_arr.append(maxQueueLength)
         print(f"Solution Length = {len(finalPath)}")
         for j in finalPath:
             j.display()  # Display the moves needed to solve the puzzle
