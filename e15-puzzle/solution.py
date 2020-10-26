@@ -6,7 +6,12 @@ of position must be moved at least once
 '''
 import random
 import copy
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.pyplot import figure
 
+
+maxQueueLength_arr = []; 
 '''
 Node class holds the puzzle as 2D list where -1 is denoting the empty tile and
 other variables like estimated distance to goal (underestimate) and total esti-
@@ -304,7 +309,12 @@ def main():
         for j in finalPath:
             j.display()  # Display the moves needed to solve the puzzle
         print(f"-------- End of E15 Puzzle S{i} --------")
-
+        
+    figure(num=None, figsize=(12, 10), dpi=80, facecolor='w', edgecolor='k')
+    plt.stem([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], maxQueueLength_arr[0:10], use_line_collection = True) 
+    plt.xlabel('Intial States (1 thru 10)')
+    plt.ylabel('Max Queue Size')
+    plt.title('Graph of Max Queue Size vs. Intial States (1 thru 10)') 
 
 if __name__ == "__main__":
     main()
