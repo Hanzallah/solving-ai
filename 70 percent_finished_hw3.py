@@ -40,7 +40,7 @@ if Minimizer[sortedIndex[0]] == Minimizer[sortedIndex[1]] or Minimizer[sortedInd
   max = Minimizer_dict[sortedIndex[0]]
 else:
   max = Minimizer_dict[sortedIndex[0]]
-
+# >>> I realized the if else statement here is the same  which is weird, probably sleep deprivation two days ago, test it, and I will look at it better tomorrow. << log:15-11
 # I need to get max and if two nodes have same value choose the earlier (from left, or lexicgrapgically using ascii order, ord())
 
 print("The move of the max player is :", max )
