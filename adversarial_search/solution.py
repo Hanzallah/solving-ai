@@ -24,6 +24,11 @@ leaves  = [1 ,3 , 4 , 1, 4 , 1 ,3, 5 , 3 ]
 #   max = Minimizer_dict[sortedIndex[0]]
 # else:
 
+# if MaxinmizerLevel[sortedIndex[0]] == MaxinmizerLevel[sortedIndex[1]] or MaxinmizerLevel[sortedIndex[0]] == MaxinmizerLevel[sortedIndex[1]] == MaxinmizerLevel[sortedIndex[2]]:
+#   max = Minimizer_dict[sortedIndex[0]]
+# else: 
+#   max = Minimizer_dict[sortedIndex[0]]
+
 # remaining -  take the node name, as in A or B etc, and append it to a list for pruned nodes -- done! 
 """
 
@@ -60,7 +65,7 @@ def alphabeta(leaves):
   R_ceil = G
 
   if L >= M_ceil:
-    #prune nodes, >> append to list of pruned nodes, E and F here -- in alphab. order
+    # prune nodes, >> append to list of pruned nodes, E and F here -- in alphab. order
     pruned.append('E')
     pruned.append('F')
   elif L < M_ceil:
@@ -82,16 +87,11 @@ def alphabeta(leaves):
     pruned.append('I')
   elif I < R_ceil:
     R_ceil = I
-  else :
-    pass
 
   MaxinmizerLevel = [L ,M_ceil, R_ceil]
   sortedIndex = sorted(range(len(MaxinmizerLevel)), key=lambda k: MaxinmizerLevel[k], reverse = True)
 
-  if MaxinmizerLevel[sortedIndex[0]] == MaxinmizerLevel[sortedIndex[1]] or MaxinmizerLevel[sortedIndex[0]] == MaxinmizerLevel[sortedIndex[1]] == MaxinmizerLevel[sortedIndex[2]]:
-    max = Minimizer_dict[sortedIndex[0]]
-  else:
-    max = Minimizer_dict[sortedIndex[0]]
+  max = Minimizer_dict[sortedIndex[0]]
 
   # I need to get max and if two nodes have same value choose the earlier (from left, or lexicgrapgically using ascii order, ord())
   print("The move of the max player is :", max )
