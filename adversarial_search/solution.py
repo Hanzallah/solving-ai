@@ -16,8 +16,13 @@ Original file is located at
 # Single stepping -- depends what he means, I emailed him and awaiting response 
 
 leaves  = [5 ,3 , 1 , 2, 5 , 4 ,1, 3 , 3 ]
-#leaves   = [5 ,2 , 2 , 5, 1 , 3 ,2, 4 , 2 ]
-#leaves  = [1 ,3 , 4 , 1, 4 , 1 ,3, 5 , 3 ] 
+leaves   = [5 ,2 , 2 , 5, 1 , 3 ,2, 4 , 2 ]
+leaves  = [1 ,3 , 4 , 1, 4 , 1 ,3, 5 , 3 ] 
+
+# >>> I realized the if else statement here is the same  which is weird, probably sleep deprivation two days ago, test it, and I will look at it better tomorrow. << log:15-11
+# if Minimizer[sortedIndex[0]] == Minimizer[sortedIndex[1]] or Minimizer[sortedIndex[0]] == Minimizer[sortedIndex[1]] == Minimizer[sortedIndex[2]]:
+#   max = Minimizer_dict[sortedIndex[0]]
+# else:
 
 # remaining -  take the node name, as in A or B etc, and append it to a list for pruned nodes -- done! 
 """
@@ -31,13 +36,9 @@ def minimax(leaves):
   sortedIndex = sorted(range(len(Minimizer)), key=lambda k: Minimizer[k], reverse = True)
   Minimizer_dict = {0: "L"  ,1: "M"  , 2: "R" }
 
-  if Minimizer[sortedIndex[0]] == Minimizer[sortedIndex[1]] or Minimizer[sortedIndex[0]] == Minimizer[sortedIndex[1]] == Minimizer[sortedIndex[2]]:
-    max = Minimizer_dict[sortedIndex[0]]
-  else:
-    max = Minimizer_dict[sortedIndex[0]]
-  # >>> I realized the if else statement here is the same  which is weird, probably sleep deprivation two days ago, test it, and I will look at it better tomorrow. << log:15-11
-  # I need to get max and if two nodes have same value choose the earlier (from left, or lexicgrapgically using ascii order, ord())
-
+  # I need to get max and if 5 3 1 2 5 4 2 3 3 two nodes have same value choose the earlier (from left, or lexicgrapgically using ascii order, ord())
+  max = Minimizer_dict[sortedIndex[0]]
+  
   print("The move of the max player is :", max )
 
 def alphabeta(leaves):
