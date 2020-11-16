@@ -42,15 +42,15 @@ def minimax(leaves):
 
 def alphabeta(leaves):
   Minimizer_dict = {0: "L"  ,1: "M"  , 2: "R" }
-  A=leaves[0] 
-  B=leaves[1] 
-  C=leaves[2]
-  D=leaves[3]
-  E=leaves[4]
-  F=leaves[5] 
-  G=leaves[6] 
-  H=leaves[7]
-  I=leaves[8]  
+  A = leaves[0] 
+  B = leaves[1] 
+  C = leaves[2]
+  D = leaves[3]
+  E = leaves[4]
+  F = leaves[5] 
+  G = leaves[6] 
+  H = leaves[7]
+  I = leaves[8]  
 
   pruned = []  
 
@@ -62,31 +62,27 @@ def alphabeta(leaves):
     #prune nodes, >> append to list of pruned nodes, E and F here -- in alphab. order
     pruned.append('E')
     pruned.append('F')
-
   elif L < M_ceil:
     if M_ceil > E:
-          M_ceil = E
-
+      M_ceil = E
     if L >= M_ceil:
-        #prune F
-          pruned.append('F')
-
+      #prune F
+      pruned.append('F')
     elif  M_ceil > F:
-        M_ceil = F  
-              #-------------- Now thrid , R node 
-  if L >= R_ceil or M_ceil >= R_ceil :
-      # prune H I 
-      pruned.append('H')
-      pruned.append('I')
+      M_ceil = F  
+  if L >= R_ceil or M_ceil >= R_ceil : #Now third , R node 
+    # prune H I 
+    pruned.append('H')
+    pruned.append('I')
   elif H < R_ceil:
-          R_ceil = H
+    R_ceil = H
   elif L >= R_ceil or M_ceil >= R_ceil :
-      #prune I
-          pruned.append('I')
+    #prune I
+    pruned.append('I')
   elif I < R_ceil:
-              R_ceil = I
+    R_ceil = I
   else :
-          pass
+    pass
 
   MaxinmizerLevel = [L ,M_ceil, R_ceil]
   sortedIndex = sorted(range(len(MaxinmizerLevel)), key=lambda k: MaxinmizerLevel[k], reverse = True)
