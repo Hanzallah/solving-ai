@@ -14,9 +14,6 @@ leaves  = [5 ,3 , 1 , 2, 5 , 4 ,1, 3 , 3 ]
 leaves   = [5 ,2 , 2 , 5, 1 , 3 ,2, 4 , 2 ]
 leaves  = [1 ,3 , 4 , 1, 4 , 1 ,3, 5 , 3 ] 
 """
-print("------ First we need few inputs from you ------- " )
-singleStepFlag = SSF()
-
 
 def SSF():
   SSF = []
@@ -37,7 +34,7 @@ def SSF():
   #print('\n\n        --- SSF ---      \n\n ')
   return SSF[0]
 
-def Program():
+def Program(singleStepFlag):
   Program = []
   temp2 = True 
   while temp2 : 
@@ -54,7 +51,7 @@ def Program():
 
   return Program[0]
    
-def InputOrGiven():
+def InputOrGiven(singleStepFlag):
   InputOrGiven = []
   temp3 = True 
   while temp3 : 
@@ -69,7 +66,7 @@ def InputOrGiven():
    print('\n >>> InputOrGiven function takes input to Solve for the Assignment Trees OR user-inputted <<< \n ')
   return InputOrGiven[0]
 
-def minimax(leaves):
+def minimax(leaves, singleStepFlag):
   L = min(leaves[0],leaves[1],leaves[2])
   M = min(leaves[3],leaves[4],leaves[5])
   R = min(leaves[6],leaves[7],leaves[8])
@@ -90,7 +87,7 @@ def minimax(leaves):
   print(" ---- Straight Minimaxing ----" )
   print("The move of the max player is :", max )
 
-def alphabeta(leaves):
+def alphabeta(leaves, singleStepFlag):
 
   if (singleStepFlag == 1) :
     print("\n >>> 1b ) Take the sequence of values corrosponding to Tree leaves (terminal Nodes)  <<< \n " )
@@ -169,35 +166,37 @@ def alphabeta(leaves):
 def main():
   # get the nine input values
   leaves = []
-  Program_instance = Program()
-  InputOrGiven_instance = InputOrGiven()  
+
+  print("------ First we need few inputs from you ------- " )
+  singleStepFlag = SSF()
   
+  Program_instance = Program(singleStepFlag)
+  InputOrGiven_instance = InputOrGiven(singleStepFlag)  
+
+
   if (InputOrGiven_instance) == 0 and (Program_instance == 1):
       print("\n Minimax For tree with values of [5 ,3 , 1 , 2, 5 , 4 ,1, 3 , 3] corrosponding to A, B, C, D, E, F, G, H, I in respective order.")
-      minimax([5 ,3 , 1 , 2, 5 , 4 ,1, 3 , 3])
+      minimax([5 ,3 , 1 , 2, 5 , 4 ,1, 3 , 3], singleStepFlag)
 
   if (InputOrGiven_instance == 0) and (Program_instance == 2):
     print("\n Minimax with Alphabeta Pruning For tree with values of [5 ,3 , 1 , 2, 5 , 4 ,1, 3 , 3] corrosponding to A, B, C, D, E, F, G, H, I in respective order.")
-    alphabeta([5 ,3 , 1 , 2, 5 , 4 ,1, 3 , 3])
+    alphabeta([5 ,3 , 1 , 2, 5 , 4 ,1, 3 , 3], singleStepFlag)
 
     print("\n Minimax with Alphabeta Pruning For tree with values of [5, 2, 2, 5, 1, 3, 2, 4, 2] corrosponding to A, B, C, D, E, F, G, H, I in respective order.")
-    alphabeta([5, 2, 2, 5, 1, 3, 2, 4, 2])
+    alphabeta([5, 2, 2, 5, 1, 3, 2, 4, 2, singleStepFlag], singleStepFlag)
 
     print("\n Minimax with Alphabeta Pruning For tree with values of [1 ,3 ,4 ,1 ,4 ,1 ,3 ,5 ,3] corrosponding to A, B, C, D, E, F, G, H, I in respective order.")
-    alphabeta([1 ,3 ,4 ,1 ,4 ,1 ,3 ,5 ,3])
+    alphabeta([1 ,3 ,4 ,1 ,4 ,1 ,3 ,5 ,3], singleStepFlag)
 
   if InputOrGiven_instance == 1:  
-      leaves = input('Enter Integer Values For A, B, C, D, E, F, G, H, I, separated by blank spaces: \n').split()
-      leaves = [int(x) for x in leaves]
-      if (len(leaves)!= 9):
-        print("Wrong input length")
-        # don't we have to ask again for input here ? 
-      elif Program_instance == 1:
-            minimax(leaves)
+      while (len(leaves)!= 9):
+        leaves = input('Enter Integer Values For A, B, C, D, E, F, G, H, I, separated by blank spaces: \n').split()
+        leaves = [int(x) for x in leaves]
+      
+      if Program_instance == 1:
+        minimax(leaves, singleStepFlag)
       elif Program_instance == 2:
-            alphabeta(leaves)
-      else:
-          pass
+        alphabeta(leaves, singleStepFlag)
 
 if __name__ == '__main__':
   main()
