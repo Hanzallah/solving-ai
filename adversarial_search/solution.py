@@ -1,10 +1,5 @@
 """
-# THINGS LEFT:
-TESTING and checking for implementation errors 
-maybe improve neatness of code and single-stepping statements
-# IMP case: when two nodes are same but choice is done lexicographically 
-
-https://colab.research.google.com/drive/1zSjoYYrPGdtvGINcS4EqpnLj2vyVajoz?usp=sharing <<<< Final work, COLAB notebook
+HW03 - Adversarial search
 """
 
 def get_step_flag():
