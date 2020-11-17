@@ -153,7 +153,8 @@ def alphabeta(leaves, singleStepFlag):
   # I need to get max and if two nodes have same value choose the earlier (from left, or lexicgrapgically using ascii order, ord())
   print("------ Minimax with Alphabeta Pruning ------- " )
   print("The move of the max player is :", max )
-  print("The Pruned Nodes are :", pruned)
+  print("The Pruned Nodes are : ", end='')
+  [print(x, end=' ') for x in pruned]
       
 def main():
   # get the nine input values
