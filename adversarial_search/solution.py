@@ -2,17 +2,9 @@
 # THINGS LEFT:
 TESTING and checking for implementation errors 
 maybe improve neatness of code and single-stepping statements
+# IMP case: when two nodes are same but choice is done lexicographically 
 
 https://colab.research.google.com/drive/1zSjoYYrPGdtvGINcS4EqpnLj2vyVajoz?usp=sharing <<<< Final work, COLAB notebook
- 
-# IMP case: when two nodes are same but choice is done lexicographically 
-## notes :::  
-# A = input("Enter Integer Values For A, B, C, D, E, F, G, H, I, separated by blank spaces: \n ")
-#    By taking that one-time input and making it into a list - Leafs -  , we create the new tree
-# Single stepping -- depends what he means, I emailed him and awaiting response 
-leaves  = [5 ,3 , 1 , 2, 5 , 4 ,1, 3 , 3 ]
-leaves   = [5 ,2 , 2 , 5, 1 , 3 ,2, 4 , 2 ]
-leaves  = [1 ,3 , 4 , 1, 4 , 1 ,3, 5 , 3 ] 
 """
 
 def SSF():
