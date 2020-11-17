@@ -14,7 +14,9 @@ leaves  = [5 ,3 , 1 , 2, 5 , 4 ,1, 3 , 3 ]
 leaves   = [5 ,2 , 2 , 5, 1 , 3 ,2, 4 , 2 ]
 leaves  = [1 ,3 , 4 , 1, 4 , 1 ,3, 5 , 3 ] 
 """
+print("------ First we need few inputs from you ------- " )
 singleStepFlag = SSF()
+
 
 def SSF():
   SSF = []
@@ -187,15 +189,15 @@ def main():
   if InputOrGiven_instance == 1:  
       leaves = input('Enter Integer Values For A, B, C, D, E, F, G, H, I, separated by blank spaces: \n').split()
       leaves = [int(x) for x in leaves]
-  if (len(leaves)!= 9):
-    print("Wrong input length")
-    # don't we have to ask again for input here ? 
-  elif Program_instance == 1:
-        minimax(leaves)
-  elif Program_instance == 2:
-        alphabeta(leaves)
-  else:
-      pass
+      if (len(leaves)!= 9):
+        print("Wrong input length")
+        # don't we have to ask again for input here ? 
+      elif Program_instance == 1:
+            minimax(leaves)
+      elif Program_instance == 2:
+            alphabeta(leaves)
+      else:
+          pass
 
 if __name__ == '__main__':
   main()
