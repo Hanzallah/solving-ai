@@ -8,7 +8,7 @@ https://colab.research.google.com/drive/1zSjoYYrPGdtvGINcS4EqpnLj2vyVajoz?usp=sh
 """
 
 def get_step_flag():
-  step = []
+  step = [2,2]
   
   while (len(step) != 1):
     step = input('Enter 0 to display only the final results - 1 for single-stepping option: ').split()
@@ -29,7 +29,7 @@ def get_algorithm(singleStepFlag):
 
   algorithm = []
   
-  while (len(algorithm) != 1):
+  while (len(algorithm) != 1 or (algorithm[0] != 0 and algorithm[0] != 1)):
     algorithm = input('Enter 0 for Straight-Minimaxing Program - 1 for Minimax with Alphabeta Pruning: ').split()
     algorithm = [int(x) for x in algorithm]
 
@@ -41,9 +41,9 @@ def choose_input(singleStepFlag):
     print('>> choose_input function takes input to Solve for the Assignment Trees OR user-inputted')
     print()
 
-  chooseInput = []
+  chooseInput = [2, 2]
   
-  while (len(chooseInput) != 1):
+  while (len(chooseInput) != 1 or (chooseInput[0] != 0 and chooseInput[0] != 1)):
     chooseInput = input('Enter 0 for solving the Assignment-Given tree(s) - 1 for Keyboard Input: ').split()
     chooseInput = [int(x) for x in chooseInput]
   
