@@ -1,6 +1,6 @@
 # AI-461 Homework 03
 
-Apollo Team:\
+## Apollo Team:\
 Hanzallah Azim Burney\
 Abdul Hamid Dabboussi\
 Ahmad Nasser K. Hejazy\

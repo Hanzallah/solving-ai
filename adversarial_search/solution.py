@@ -12,7 +12,7 @@ def SSF():
   temp1 = True 
 
   while temp1 : 
-    first = input('Enter 0 to display only the final results/ 1 for single-stepping option : \n').split()
+    first = input('Enter 0 to display only the final results / 1 for single-stepping option : \n').split()
     SSF = [int(x) for x in first]
     if (len(SSF)!= 1) or (SSF[0]!=1 and  SSF[0]!=0) : 
         print("\n *Only enter 0 or 1 , please!* \n " )
