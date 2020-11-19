@@ -7,18 +7,22 @@
 '''
 from itertools import chain
 
+# Recursive utility function for the topological sorting algorithm
 def top_sort_util(v, visited, stack, graph):
     keys = list(graph.keys())
     visited[v] = True
     
+    # add element to the class-precedence list
     stack.append(keys[v])
 
+    # visit the children of the element
     for i in range(len(graph[keys[v]])):
         if visited[i] == False:
             top_sort_util(i, visited, stack, graph)
     
-
+# Main topological sorting algorithm
 def top_sort(graph):
+    # get the list of initially exposed elements for which we will create the precedence lists
     exposed = []
     [exposed.append(i) for i in graph.keys() if i not in list(chain.from_iterable(graph.values()))]
 
@@ -48,13 +52,18 @@ def create_inputs():
     return (input_A, input_B, input_C)
 
 def main():
+
+    # get the homework inputs
     input_A, input_B, input_C = create_inputs()
+
     print('\nTHE FIRST EXAMPLE')
     print('\nHIGHEST PRECEDENCE --> LOWEST PRECEDENCE')
     top_sort(input_A)
+
     print('\nTHE SECOND EXAMPLE')
     print('\nHIGHEST PRECEDENCE --> LOWEST PRECEDENCE')
     top_sort(input_B)
+
     print('\nTHE THIRD EXAMPLE')
     print('\nHIGHEST PRECEDENCE --> LOWEST PRECEDENCE')
     top_sort(input_C)
