@@ -1,38 +1,57 @@
 '''
 # AI HW-HW04 Class precedence lists 
+# We have modified the topological sort algorithm from Geekforgeeks to suit our purpose
+# The original algorithm can be found at https://www.geeksforgeeks.org/topological-sorting/
 '''
 from itertools import chain
 
-def get_fish_hooks(graph):
-    fish_hooks = dict()
-    for key in graph.keys():
-        fish_hooks[key] = []
-        right = key
-        for value in graph[key]:
-            fish_hooks[key].append(right + '-' + value)
-            right = value
-    return fish_hooks
+def top_sort_util(v, visited, stack, graph):
+    keys = list(graph.keys())
+    visited[v] = True
+    
+    stack.append(keys[v])
 
-def get_precedence(graph):
-    fish_hooks = get_fish_hooks(graph)
-    precedence_list = []
+    for i in range(len(graph[keys[v]])):
+        if visited[i] == False:
+            top_sort_util(i, visited, stack, graph)
+    
+
+def top_sort(graph):
     exposed = []
-    [exposed.append(key) for key in graph.keys() if key not in list(chain.from_iterable(graph.values()))]
+    [exposed.append(i) for i in graph.keys() if i not in list(chain.from_iterable(graph.values()))]
 
-    while len(list(chain.from_iterable(fish_hooks.values()))) != 0:
-        pass
-  
-    print(exposed)    
+    for item in exposed:
+        mod_graph = dict()
+        # create modified graph for each list
+        for i in graph.keys():
+            if i == item or i in graph[item] or i in list(chain.from_iterable(mod_graph.values())):
+                mod_graph[i] = graph[i]
+
+        visited = [False] * len(mod_graph.keys())
+        stack = []
+        for i in range(len(mod_graph.keys())):
+            if (not visited[i]):
+                top_sort_util(i, visited, stack, mod_graph)
+        print(stack)                   
 
 # Generate the inputs using adjacency lists
 def create_inputs():
     input_A = {'fstream':['iostream'],'ifstream':['istream'],'iostream':['istream', 'ostream'],'ofstream':['ostream'],'istream':['ios'],'ostream':['ios'],'ios':[],}
 
-    return input_A
+    input_B = {'Consultant Manager': ['Consultant', 'Manager'], 'Director':['Manager'], 'Permanent Manager':['Manager', 'Permanent Employee'], 'Consultant':['Temporary Employee'], 'Manager':['Employee'], 'Temporary Employee': ['Employee'] , 'Permanent Employee': ['Employee'], 'Employee':[]}
+    
+    input_C = {'Crazy':['Professors', 'Hackers'], 'Professors':['Eccentrics','Teachers'], 'Hackers':['Eccentrics', 'Programmers'], 'Eccentrics':['Dwarfs'], 'Teachers':['Dwarfs'], 'Programmers':['Dwarfs'],  'Jacque':['Weightlifters', 'Shotputters', 'Athletes'], 'Weightlifters':['Athletes', 'Endomorpha'], 'Shotputters':['Athletes', 'Endomorpha'], 'Athletes':['Dwarfs'], 'Endomorpha':['Dwarfs'], 'Dwarfs':['Everything'],  'Everything':[]}
+
+    return (input_A, input_B, input_C)
 
 def main():
-    input_A = create_inputs()
-    get_precedence(input_A)
+    input_A, input_B, input_C = create_inputs()
+    print('THE FIRST EXAMPLE')
+    top_sort(input_A)
+    print('\nTHE SECOND EXAMPLE')
+    top_sort(input_B)
+    print('\nTHE THIRD EXAMPLE')
+    top_sort(input_C)
 
 if __name__ == '__main__':
     main()
