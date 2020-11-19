@@ -2,6 +2,8 @@
 # AI HW-HW04 Class precedence lists 
 # We have modified the topological sort algorithm from Geekforgeeks to suit our purpose
 # The original algorithm can be found at https://www.geeksforgeeks.org/topological-sorting/
+# The algorithm was modified to perform top sort for each initially exposed element by creating a new graph
+# In the recursive top_sort_util we also add to the stack before doing the recursion
 '''
 from itertools import chain
 
@@ -27,6 +29,7 @@ def top_sort(graph):
             if i == item or i in graph[item] or i in list(chain.from_iterable(mod_graph.values())):
                 mod_graph[i] = graph[i]
 
+        # perform topological sort for each list
         visited = [False] * len(mod_graph.keys())
         stack = []
         for i in range(len(mod_graph.keys())):
@@ -46,11 +49,14 @@ def create_inputs():
 
 def main():
     input_A, input_B, input_C = create_inputs()
-    print('THE FIRST EXAMPLE')
+    print('\nTHE FIRST EXAMPLE')
+    print('\nHIGHEST PRECEDENCE --> LOWEST PRECEDENCE')
     top_sort(input_A)
     print('\nTHE SECOND EXAMPLE')
+    print('\nHIGHEST PRECEDENCE --> LOWEST PRECEDENCE')
     top_sort(input_B)
     print('\nTHE THIRD EXAMPLE')
+    print('\nHIGHEST PRECEDENCE --> LOWEST PRECEDENCE')
     top_sort(input_C)
 
 if __name__ == '__main__':
