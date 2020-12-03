@@ -10,7 +10,6 @@ You should enter two int values with a space in between.
 
 import math
 
-
 # Selection Sort is used
 def sortByWidth(points):
     for i in range(len(points)):
@@ -173,73 +172,107 @@ def displayTree(neighbourBoxesFromLeftToRight, conditions):
 
 # The function that responsible for traversing the tree and outputting the
 # every step while traversing
-def getTheAnswer(neighbourBoxesFromLeftToRight, conditions, width, height):
+def getTheAnswer(neighbourBoxesFromLeftToRight, conditions, width, height,step):
     answer = ""
-    print(f"Is the Height bigger than {conditions[0]}?")
+    if (step):
+        print(f"Is the Height bigger than {conditions[0]}?")
     if height > conditions[0]:
-        print("-YES")
-        print(f"Is the Width bigger than {conditions[2]}?")
-        if width > conditions[2]:
+        if (step):
             print("-YES")
-            print(f"Is the Height bigger than {conditions[6]}?")
-            if height > conditions[6]:
+            print(f"Is the Width bigger than {conditions[2]}?")
+        if width > conditions[2]:
+            if (step):
                 print("-YES")
+                print(f"Is the Height bigger than {conditions[6]}?")
+            if height > conditions[6]:
+                if (step):
+                    print("-YES")
                 answer = neighbourBoxesFromLeftToRight[7]
             else:
-                print("-NO")
+                if (step):
+                    print("-NO")
                 answer = neighbourBoxesFromLeftToRight[6]
         else:
-            print("-NO")
-            print(f"Is the Height bigger than {conditions[5]}?")
+            if (step):
+                print("-NO")
+                print(f"Is the Height bigger than {conditions[5]}?")
             if height > conditions[5]:
-                print("-YES")
+                if (step):
+                    print("-YES")
                 answer = neighbourBoxesFromLeftToRight[5]
             else:
-                print("-NO")
+                if (step):
+                    print("-NO")
                 answer = neighbourBoxesFromLeftToRight[4]
     else:
-        print("-NO")
-        print(f"Is the Width bigger than {conditions[1]}?")
+        if (step):
+            print("-NO")
+            print(f"Is the Width bigger than {conditions[1]}?")
         if width > conditions[1]:
-            print("-YES")
-            print(f"Is the Height bigger than {conditions[4]}?")
-            if height > conditions[4]:
+            if (step):
                 print("-YES")
+                print(f"Is the Height bigger than {conditions[4]}?")
+            if height > conditions[4]:
+                if (step):
+                    print("-YES")
                 answer = neighbourBoxesFromLeftToRight[3]
             else:
-                print("-NO")
+                if (step):
+                    print("-NO")
                 answer = neighbourBoxesFromLeftToRight[2]
         else:
-            print("-NO")
-            print(f"Is the Height bigger than {conditions[3]}?")
+            if (step):
+                print("-NO")
+                print(f"Is the Height bigger than {conditions[3]}?")
             if height > conditions[3]:
-                print("-YES")
+                if (step):
+                    print("-YES")
                 answer = neighbourBoxesFromLeftToRight[1]
             else:
-                print("-NO")
+                if (step):
+                    print("-NO")
                 answer = neighbourBoxesFromLeftToRight[0]
     return answer
 
+# Get user choice for single stepping
+def get_step_flag():
+  step = [2,2]
+  
+  while (len(step) != 1):
+    step = input('Enter 0 to display only the final results - 1 for single-stepping option: ').split()
+    step = [int(x) for x in step]
+
+  if (step[0]):
+    print()
+    print('>> get_step_flag function takes input to decide Single-stepping option')
+    print()
+  return step[0]
 
 # The MAIN function -------------------
 def main():
+    # get single stepping input
+    step = get_step_flag()
+
     # Entering points in the figure 19.2 of winston book
     points = [(1, 2, "Red"), (2, 1, "Violet"), (2, 5, "Orange"),
               (2, 6, "Red"), (4, 2, "Blue"), (5, 6, "Yellow"),
               (6, 5, "Purple"), (6, 1, "Green")]
+
     # Establish the tree
     neighbourBoxesFromLeftToRight, conditions = getKDTree(points)
-    # Print the tree
-    displayTree(neighbourBoxesFromLeftToRight, conditions)
+
+    if (step):
+        # Print the tree
+        displayTree(neighbourBoxesFromLeftToRight, conditions)
 
     # Get width and height from the console
     values = input("Please enter width and height int values with a space in between: ")
     width = int(values[0])
     height = int(values[2])
     # Get the answer by traversing through the tree
-    answer = getTheAnswer(neighbourBoxesFromLeftToRight, conditions, width, height)
+    answer = getTheAnswer(neighbourBoxesFromLeftToRight, conditions, width, height,step)
     # Print the answer
-    print(f"*** Then the answer is: {answer[2]} box at ({answer[0]}, {answer[1]}) ***")
+    print(f"*** The the answer is: {answer[2]} box at ({answer[0]}, {answer[1]}) ***")
 
 
 if __name__ == "__main__":

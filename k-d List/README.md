@@ -8,7 +8,7 @@ Can Doğa Patır\
 Yusuf Ziya Dilek
 
 ## Instructions
-`solution.py` contains the solution for the class precedence problem.
+`solution.py` contains the solution for the k-d trees problem.
 
 To test our code, run:
 ```bash
